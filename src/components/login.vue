@@ -1,64 +1,26 @@
 <template>
-  <div class="login-container">
-    <!-- Page container -->
-    <div id="app" class="page-container">
-
-      <!-- Page content -->
-      <div class="page-content">
-
-        <!-- Main content -->
-        <div class="content-wrapper">
-
-          <!-- Simple login form -->
-          <form @submit.prevent="onSubmit(email, password)">
-            <div class="panel panel-body login-form">
-              <div class="text-center">
-                <div class="icon-object border-slate-300 text-slate-300">
-                  <i class="icon-reading"></i>
-                </div>
-                <!-- <h5 class="content-group">Login to your account <small class="display-block">Enter your credentials below</small></h5> -->
-              </div>
-
-              <div class="form-group has-feedback has-feedback-left">
-                <input v-model="email" type="text" class="form-control" placeholder="아이디">
-                <div class="form-control-feedback">
-                  <i class="icon-user text-muted"></i>
-                </div>
-              </div>
-
-              <div class="form-group has-feedback has-feedback-left">
-                <input v-model="password" v-on:keydown="keydown" type="password" class="form-control" placeholder="비밀번호">
-                <div class="form-control-feedback">
-                  <i class="icon-lock2 text-muted"></i>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <!-- <button type="submit" class="btn btn-primary btn-block">로그인 <i class="icon-circle-right2 position-right"></i></button> -->
-                <button type="submit" value="Login" class="btn btn-primary btn-block">로그인</button>
-                <a href="login_registration.html" class="btn btn-default btn-block content-group">회원가입</a>
-              </div>
-              <!-- <div class="text-center">
-                <a href="login_password_recover.html">Forgot password?</a>
-              </div> -->
-            </div>
-          </form>
-          <!-- /simple login form -->
-
-        </div>
-        <!-- /main content -->
-
-      </div>
-      <!-- /page content -->
-
-    </div>
-    <!-- /page container -->
-  </div>
+  <v-container row justify-center fill-height>
+    <v-layout justify-center>
+      <v-flex xs8 sm5 md4 lg3 xl2>
+        <v-card>
+          <v-card-title primary-title class="justify-center">
+            <v-form>
+              <v-text-field autofocus v-model="email" name="id" label="아이디" type="text"></v-text-field>
+              <v-text-field  v-model="password" name="password" label="비밀번호" type="password"></v-text-field>
+              <v-card-actions class="justify-center">
+                <v-btn color="primary" @click="onSubmit(email, password)">로그인</v-btn>
+                <v-btn color="white">회원가입</v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-title>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 <script>
-
-  import $ from 'jquery'
-
+  import axios from "axios"
+  import store from "../store"
   export default {
     data() {
       return {
@@ -67,33 +29,32 @@
       }
     },
     methods: {
-      keydown: function (e) {
+      keydown (e) {
         if (e.keyCode === 13) {
-          this.login()
+          this.onSubmit(this.email, this.password)
         }
         return;
       },
-      onSubmit(email, password) {
-        if (email !== 'admin' || password !== 'admin') {
+      onSubmit (email, password) {
+        if (email !== 'admin' && email !== 'admin2' || password !== 'admin') {
           alert('아이디 또는 비밀번호가 일치하지 않습니다.')
           return
         }
-        this.$store.commit('LOGIN', {
-          accessToken: 'test'
+        axios.get(`${store.state.resourceHost}/auth?type=${email}`).then(result => {
+          let token = result.data.data.token
+          this.$store.commit('LOGIN', { accessToken: token })
+          this.redirect()
         })
-        this.redirect()
       },
-      redirect() {
-        const {search} = window.location
+      redirect () {
+        const { search } = window.location
         if (search === '') {
           this.$router.push({
-            path: 'breeding'
+            path: 'insertManagement-1'
           })
         } else {
           const tokens = search.replace(/^\?/, '').split('&')
-          const {
-            returnPath
-          } = tokens.reduce((qs, tkn) => {
+          const { returnPath } = tokens.reduce((qs, tkn) => {
             const pair = tkn.split('=')
             qs[pair[0]] = decodeURIComponent(pair[1])
             return qs
@@ -105,3 +66,4 @@
   }
 
 </script>
+

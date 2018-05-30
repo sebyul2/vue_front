@@ -14,6 +14,9 @@ const core = () => {
 
   // Calculate min height
   function containerHeight() {
+
+    if ($('.page-container').length === 0) return
+
     var availableHeight = $(window).height() - $('.page-container').offset().top - $('.navbar-fixed-bottom').outerHeight();
 
     $('.page-container').attr('style', 'min-height:' + availableHeight + 'px');
@@ -311,10 +314,10 @@ const core = () => {
   // -------------------------
 
   // Left sidebar
-  $('.navigation-main > .navigation-header > i').tooltip({
-    placement: 'right',
-    container: 'body'
-  });
+  // $('.navigation-main > .navigation-header > i').tooltip({
+  //   placement: 'right',
+  //   container: 'body'
+  // });
 
 
 
@@ -572,17 +575,17 @@ const core = () => {
         $('body').removeClass('sidebar-mobile-main sidebar-mobile-secondary sidebar-mobile-opposite');
 
         // Initialize nicescroll on tablets+
-        $(".menu-list").niceScroll({
-          mousescrollstep: 100,
-          cursorcolor: '#ccc',
-          cursorborder: '',
-          cursorwidth: 3,
-          hidecursordelay: 200,
-          autohidemode: 'scroll',
-          railpadding: {
-            right: 0.5
-          }
-        });
+        // $(".menu-list").niceScroll({
+        //   mousescrollstep: 100,
+        //   cursorcolor: '#ccc',
+        //   cursorborder: '',
+        //   cursorwidth: 3,
+        //   hidecursordelay: 200,
+        //   autohidemode: 'scroll',
+        //   railpadding: {
+        //     right: 0.5
+        //   }
+        // });
 
         // Remove visibility of heading elements on desktop
         $('.page-header-content, .panel-heading, .panel-footer').removeClass('has-visible-elements');
@@ -604,11 +607,11 @@ const core = () => {
   // -------------------------
 
   // Popover
-  $('[data-popup="popover"]').popover();
+  // $('[data-popup="popover"]').popover();
 
 
   // Tooltip
-  $('[data-popup="tooltip"]').tooltip();
+  // $('[data-popup="tooltip"]').tooltip();
 }
 
 export default core

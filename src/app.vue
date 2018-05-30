@@ -1,59 +1,56 @@
 <template>
-  <div>
-    <!-- app header -->
+  <v-app>
+
     <header class="app-header">
       <app-nav></app-nav>
     </header>
-    <!-- /app header -->
 
-    <!-- Page header -->
-    <div class="page-header">
-      <div class="breadcrumb-line">
-        <ul class="breadcrumb">
-          <li>
-            <router-link to="main">
-              <i class="icon-home2 position-left"></i> Home
-            </router-link>
-          </li>
-          <li class="active">{{pageName}}</li>
-        </ul>
-      </div>
+    <div grid-list-md text-xs-center>
+      <v-layout row>
+        <v-flex v-if="pageName !== 'login'">
+          <slider></slider>
+        </v-flex>
+        <v-flex xs12>
+          <router-view  style="min-width:1024px; max-width:1680px;"></router-view>
+        </v-flex>
+      </v-layout>
     </div>
-    <!-- /page header -->
 
-    <!-- main -->
-    <router-view></router-view>
-    <!-- /main -->
+    <v-bottom-nav fixed></v-bottom-nav>
 
-    <!-- Footer -->
-    <b-navbar class="breadcrumb-line footer" type="light" variant="light">
-      <b-navbar-brand>&copy; 2018. byul</b-navbar-brand>
-      <b-navbar-nav class="ml-auto">
-        <b-nav-item>About</b-nav-item>
-        <!-- <b-nav-item>Terms</b-nav-item>
-        <b-nav-item>Contact</b-nav-item> -->
-      </b-navbar-nav>
-    </b-navbar>
-    <!-- /footer -->
-  </div>
+  </v-app>
 </template>
 
 <script>
   import AppNav from './components/AppNav'
+  import Slider from './components/slider'
   import store from './store'
 
   export default {
     components: {
-      AppNav
+      AppNav,
+      Slider
     },
-    data: {
-      message: 'message_app'
+    data() {
+      return {
+        message: 'message_app'
+      }
     },
     computed: {
       pageName: () => {
         return store.state.pageName
+      },
+      groupName: () => {
+        return store.state.groupName
       }
     }
   }
 
 </script>
+<style>
+  .bottom-nav {
+    height: 50px;
+    margin-top: 42px;
+  }
+
+</style>

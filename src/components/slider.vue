@@ -1,125 +1,206 @@
 <template>
-  <div class="sidebar sidebar-main sidebar-default">
-    <div class="sidebar-content">
+  <v-navigation-drawer stateless width="280" permanent class="gray" dark style="overflow: hidden;">
+      <v-list>
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-icon>dashboard</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>요청 리스트</v-list-tile-title>
+        </v-list-tile>
 
-      <!-- Main navigation -->
-      <div class="sidebar-category sidebar-category-visible">
-        <div class="category-title h6">
-          <span>Main navigation</span>
-          <ul class="icons-list">
-            <li>
-              <a href="#" data-action="collapse"></a>
-            </li>
-          </ul>
-        </div>
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-icon>account_box</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>거래 농가 리스트</v-list-tile-title>
+        </v-list-tile>
 
-        <div class="category-content sidebar-user">
-          <div class="media">
-            <a href="#" class="media-left">
-              <img src="assets/images/placeholder.jpg" class="img-circle img-sm" alt="">
-            </a>
-            <div class="media-body">
-              <span class="media-heading text-semibold">테스터</span>
-              <!-- <div class="text-size-mini text-muted">
-                      <i class="icon-pin text-size-small"></i> &nbsp;Santa Ana, CA
-                    </div> -->
-            </div>
+        <v-list-group no-action v-model="activeInsertQuantity">
+          <v-list-tile slot="activator">
+            <v-list-tile-action>
+              <v-icon>gavel</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-title>입추 예정 물량</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile v-for="subItem in items.insertQuantity.subItems" :key="subItem.title" :to="subItem.pageName">
+            <v-list-tile-title>{{subItem.title}}</v-list-tile-title>
+          </v-list-tile>
+        </v-list-group>
 
-            <div class="media-right media-middle">
-              <ul class="icons-list">
-                <li>
-                  <a href="#">
-                    <i class="icon-cog3"></i>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
+        <v-list-group no-action v-model="activeInsertManagement">
+          <v-list-tile slot="activator">
+            <v-list-tile-action>
+              <v-icon>gavel</v-icon>
+            </v-list-tile-action>
+            <v-list-tile-title>입추 관리</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile v-for="subItem in items.insertManagement.subItems" :key="subItem.title" :to="subItem.pageName">
+            <v-list-tile-title>{{subItem.title}}</v-list-tile-title>
+          </v-list-tile>
+        </v-list-group>
 
-        <div class="category-content no-padding">
-          <ul class="navigation navigation-main navigation-accordion">
+        <v-list-tile to="breeding">
+          <v-list-tile-action>
+            <v-icon>account_box</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>사육 현황</v-list-tile-title>
+        </v-list-tile>
 
-            <!-- Main -->
-            <!-- <li class="navigation-header">
-                    <span>Main</span>
-                    <i class="icon-menu" title="Main pages"></i>
-                  </li> -->
-            <li v-bind:class="{ active: pageName === 'dashboard' }">
-              <router-link to="main">
-                <i class="icon-home4"></i>
-                <span>요청리스트</span>
-              </router-link>
-            </li>
-            <li v-bind:class="{ active: pageName === 'trading' }">
-              <router-link to="trading">
-                <i class="icon-stack2"></i>
-                <span>거래 농가 리스트</span>
-              </router-link>
-            </li>
-            <li v-bind:class="{ active: pageName === 'insert_quantity' }">
-              <router-link to="insert_quantity">
-                <i class="icon-copy"></i>
-                <span>입추 예정 물량</span>
-              </router-link>
-            </li>
-            <li v-bind:class="{ active: pageName === 'insert_management' }">
-              <router-link to="insert_management">
-                <i class="icon-droplet2"></i>
-                <span>입추 관리</span>
-              </router-link>
-            </li>
-            <li v-bind:class="{ active: pageName === 'breeding' }">
-              <router-link to="breeding">
-                <i class="icon-newspaper"></i>
-                <span>사육 현황</span>
-              </router-link>
-            </li>
-            <li v-bind:class="{ active: pageName === 'out' }">
-              <router-link to="out">
-                <i class="icon-user-tie"></i>
-                <span>출하 관리</span>
-              </router-link>
-            </li>
-            <li v-bind:class="{ active: pageName === 'push' }">
-              <router-link to="push">
-                <i class="icon-book"></i>
-                <span>푸시알림 범위 설정</span>
-              </router-link>
-            </li>
-            <li v-bind:class="{ active: pageName === 'cctv' }">
-              <router-link to="ccty">
-                <i class="icon-book"></i>
-                <span>CCTV</span>
-              </router-link>
-            </li>
-            <li v-bind:class="{ active: pageName === 'data' }">
-              <router-link to="data">
-                <i class="icon-stats-bars"></i>
-                <span>데이터</span>
-              </router-link>
-            </li>
-            <!-- /main -->
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-icon>account_box</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>출하 관리</v-list-tile-title>
+        </v-list-tile>
 
-          </ul>
-        </div>
-      </div>
-      <!-- /main navigation -->
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-icon>account_box</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>푸시알림 범위 설정</v-list-tile-title>
+        </v-list-tile>
 
-    </div>
-  </div>
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-icon>account_box</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>CCTV</v-list-tile-title>
+        </v-list-tile>
+
+        <v-list-tile>
+          <v-list-tile-action>
+            <v-icon>account_box</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-title>데이터</v-list-tile-title>
+        </v-list-tile>
+
+      </v-list>
+  </v-navigation-drawer>
 </template>
 <script>
-  import store from '../store'
+  import store from "../store";
   export default {
-    name: 'slider',
+    name: "slider",
+    data() {
+      return {
+        items: {
+          dashboard: {
+            title: '요청리스트',
+            icon: 'dashboard',
+            pageName: 'dashboard'
+          },
+          trading: {
+            title: '거래 농가 리스트',
+            icon: 'account_box',
+            pageName: 'trading'
+          },
+          insertQuantity: {
+            title: '입추 예정 물량',
+            icon: 'gavel',
+            active: 'true',
+            subItems: [{
+                title: '부화장 관리',
+                icon: 'gavel',
+                pageName: 'insertQuantity-1'
+              },
+              {
+                title: '입추 예정물량 관리',
+                icon: 'gavel',
+                pageName: 'insertQuantity-2'
+              },
+            ]
+          },
+          insertManagement: {
+            title: '입추 관리',
+            icon: 'gavel',
+            active: 'true',
+            subItems: [{
+                title: '입추대기 명단',
+                icon: 'gavel',
+                pageName: 'insertManagement-1'
+              },
+              {
+                title: '분양내역 확정',
+                icon: 'gavel',
+                pageName: 'insertManagement-2'
+              },
+              {
+                title: '분양내역 확인',
+                icon: 'gavel',
+                pageName: 'insertManagement-3'
+              },
+            ]
+          },
+          breeding: {
+            title: '사육 현황',
+            icon: 'dashboard',
+            pageName: 'breeding'
+          },
+          out: {
+            title: '출하 관리',
+            icon: 'dashboard',
+            pageName: 'out'
+          },
+          push: {
+            title: '푸시알림 범위 설정',
+            icon: 'dashboard',
+            pageName: 'push'
+          },
+          cctv: {
+            title: 'CCTV',
+            icon: 'dashboard',
+            pageName: 'cctv'
+          },
+          data: {
+            title: '데이터',
+            icon: 'dashboard',
+            pageName: 'data'
+          },
+        }
+      }
+    },
     computed: {
-      pageName : () => {
-        return store.state.pageName
+      pageName: () => {
+        return store.state.pageName;
+      },
+      groupName: () => {
+        return store.state.groupName;
+      },
+      activeInsertManagement: () => {
+        //return this.groupName === 'insertManagement' ? true : false
+        return true
+      },
+      activeInsertQuantity: () => {
+        //return this.groupName === 'insertQuantity' ? true : false
+        return true
       }
     }
   }
 
 </script>
 <style>
+  /* .navigation-drawer {
+   top: 48px;
+ } */
+
+  a:link {
+    /* color: red; */
+    text-decoration: none;
+  }
+
+  a:visited {
+    /* color: black; */
+    text-decoration: none;
+  }
+
+  a:hover {
+    /* color: blue; */
+    text-decoration: none;
+  }
+
+  .primary--text {
+    color: #9090ff;
+
+  }
+
 </style>
